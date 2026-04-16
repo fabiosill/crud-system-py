@@ -1,43 +1,49 @@
-## database
+import mysql.connector
+conexao = mysql.connector.connect(
+    host='127.0.0.1',
+    port=3306,
+    user='root',
+    database='crudpython'
+)
+sql = conexao.cursor()
 
-dtname = ["Fabio", "Arthur", "Henrique"]
-dtage = [25, 18, 23]
-dtcity = ["S.A", "SBC", "SC"]
+def sqlcreate():
+    commandcreate = f'INSERT INTO usuarios (sqlname, sqlage, sqlcity) VALUES ("{dtname}", "{dtage}", "{dtcity}")'
+    sql.execute(commandcreate)
+    conexao.commit()
+
+def sqlconsult():
+    commandconsult = f'SELECT * FROM usuarios'
+    sql.execute(commandconsult)
+
+    resultado = sql.fetchall()
+
+    print("\nTabelas")
+    for linha in resultado:
+        print(linha)
 
 def congrats():
     print("Congratulations, the data was added with successfuly")
+
 def options():
-    return int(input("\n===== This is a database system :) ======\n\nWhich collumn you gonna to open\n 1.Name | 2.Age | 3.City | 4.Consult | 0.Finish\n"))
+    return int(input("\n===== This is a database system :) ======\n\nWhich option you gonna to open\n 1.Create database | 2.Consult | 0.Finish\n"))
 
 option = options()
 
 while option != 0:
 
     if option == 1:
-        newname = input("This is the Name collumn, please enter a new name\n")
-        dtname.append(newname)
+        dtname = input("This is the Name collumn, please enter a new name\n")
+        dtage = input("This is the Age collumn, please enter a new age\n")
+        dtcity = input("This is the City collumn, please enter a new name\n")
+        
+        sqlcreate()
         congrats()
         option = options()
+
     elif option == 2:
-        newage = input("This is the Age collumn, please enter a new age\n")
-        dtage.append(newage)
-        congrats()
+        sqlconsult()
         option = options()
-    elif option == 3:
-        newcity = input("This is the City collumn, please enter a new name\n")
-        dtcity.append(newcity)
-        congrats()
-        option = options()
-    elif option == 4:
-        consulttable = int(input("Which collumn you would like to consult\n 1 - Name | 2 - Age | 3 - City | 0 - Left\n"))
-        if consulttable == 1:
-            print(f"This is the Name collunm\n{dtname}")
-        elif consulttable == 2:
-            print(f"This is the Age collunm\n{dtage}")
-        elif consulttable == 3:
-            print(f"This is the City collunm\n{dtcity}")
-        else:
-            print("\n")
-            option = options()
+
     else:
         break
